@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CMPS 260: Module 6 Programming Project</title>
+<style>* { font-family: monospace; }</style>
+<script>
+
+// NOTE: You must implement the data structures using the prototype approach.
+//       This is not what the book uses, so you have to convert it.
+//       See also: https://it.pointpark.edu/tutorials/no-prototype-vs-prototype/
+
+// NOTE: Please review the following links regularly:
+//       https://it.pointpark.edu/tutorials/arrays-vs-objects/
+//       https://it.pointpark.edu/tutorials/no-prototype-vs-prototype/
+//       https://it.pointpark.edu/tutorials/implementation-vs-interface/
+
+
+
+//---------//
+// Project //
+//---------//
+console.log("Project");
+
+// 1. Implement the ArrayList using the prototype.
+
+function ArrayList() {
+  this.array = [];
+}
+
+ArrayList.prototype.insert = function (item) {
+  this.array.push(item);
+}
+
+ArrayList.prototype.toString = function () {
+  return this.array.join(', ');
+}
+
+ArrayList.prototype.swap = function (index1, index2) {
+  const temp = this.array[index1];
+  this.array[index1] = this.array[index2];
+  this.array[index2] = temp;
+}
+
+// 2. Complete the createNonSortedRandomArray(size) below by returning an
+//    ArrayList with the numbers 1, 2, ..., size in random order.
+//    NOTE: there are multiple ways to achieve this.
+
+function createNonSortedRandomArray(size) {
+  const randomArray = new ArrayList();
+  for (let i = 1; i <= size; i++) {
+    randomArray.insert(i);
+  }
+
+  // Shuffle the array to make it random
+  for (let i = size - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    randomArray.swap(i, j);
+  }
+
+  return randomArray;
+}
+
+// 3. Implement the Quick Sort algorithm and test your code with the function
+//    you wrote for (2).
+
+function quickSort(arr) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+
+  const pivot = arr[0];
+  const left = [];
+  const right = [];
+
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] < pivot) {
+      left.push(arr[i]);
+    } else {
+      right.push(arr[i]);
+    }
+  }
+
+  return [...quickSort(left), pivot, ...quickSort(right)];
+}
+
+// 5. Implement the binary search algorithm and test your code.
+
+function binarySearch(arr, item) {
+  let low = 0;
+  let high = arr.length - 1;
+
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    const current = arr[mid];
+
+    if (current === item) {
+      return true;
+    } else if (current < item) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+
+  return false;
+}
+
+// The following set of steps come from an earlier homework.
+// The following text is from the all the Amendments in the Bill of Rights.
+var text = "Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to assemble, and to petition the Government for a redress of grievances. A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms, shall not be infringed. No Soldier shall, in time of peace be quartered in any house, without the consent of the Owner, nor in time of war, but in a manner to be prescribed by law. The right of the people to be secure in their persons, houses, papers, and effects, against unreasonable searches and seizures, shall not be violated, and no Warrants shall issue, but upon probable cause, supported by Oath or affirmation, and particularly describing the place to be searched, and the persons or things to be seized. No person shall be held to answer for a capital, or otherwise infamous crime, unless on a presentment or indictment of a Grand Jury, except in cases arising in the land or naval forces, or in the Militia, when in actual service in time of War or public danger; nor shall any person be subject for the same offence to be twice put in jeopardy of life or limb; nor shall be compelled in any criminal case to be a witness against himself, nor be deprived of life, liberty, or property, without due process of law; nor shall private property be taken for public use, without just compensation. In all criminal prosecutions, the accused shall enjoy the right to a speedy and public trial, by an impartial jury of the State and district wherein the crime shall have been committed, which district shall have been previously ascertained by law, and to be informed of the nature and cause of the accusation; to be confronted with the witnesses against him; to have compulsory process for obtaining witnesses in his favor, and to have the Assistance of Counsel for his defence. In Suits at common law, where the value in controversy shall exceed twenty dollars, the right of trial by jury shall be preserved, and no fact tried by a jury, shall be otherwise re-examined in any Court of the United States, than according to the rules of the common law. Excessive bail shall not be required, nor excessive fines imposed, nor cruel and unusual punishments inflicted. The enumeration in the Constitution, of certain rights, shall not be construed to deny or disparage others retained by the people. The powers not delegated to the United States by the Constitution, nor prohibited by it to the States, are reserved to the States respectively, or to the people.";
+// First we make the text lower case.
+text = text.toLowerCase();
+// Then we remove punctuation by using a regular expression.
+text = text.replace(/[.,;]/g, "");
+// And store the words into an array.
+var textArray = text.split(" ");
+
+// 6. Use sorting and searching to find out whether the word 'president'
+//    appears in the amendments. You should use the code you wrote above.
+
+const randomArray = createNonSortedRandomArray(textArray.length);
+const sortedArray = quickSort(randomArray.array);
+const isPresidentInAmendments = binarySearch(sortedArray, 'president');
+console.log('Is "president" in the amendments:', isPresidentInAmendments);
+
+// 7. Use sorting and searching to find out whether the word 'state' appears
+//    in the amendments. You should use the code you wrote above.
+
+const isStateInAmendments = binarySearch(sortedArray, 'state');
+console.log('Is "state" in the amendments:', isStateInAmendments);
+
+
+// 8. Use sorting and searching to find out whether the word 'country' appears
+//    in the amendments. You should use the code you wrote above.
+
+
+const isCountryInAmendments = binarySearch(sortedArray, 'country');
+console.log('Is "country" in the amendments:', isCountryInAmendments);
+
+
+
+</script>
+</head>
+<body>
+  See console!
+</body>
+</html>
